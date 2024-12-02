@@ -19,7 +19,11 @@ After that the application will make use of this credentials in order to make ca
 To start a local development server, run:
 
 ```bash
-ng serve
+npm install
+```
+and
+```bash
+npm run start
 ```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
