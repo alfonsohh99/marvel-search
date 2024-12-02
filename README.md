@@ -33,6 +33,10 @@ Once the server is running, open your browser and navigate to `http://localhost:
 To build the project run:
 
 ```bash
+npm install
+```
+and
+```bash
 ng build
 ```
 
