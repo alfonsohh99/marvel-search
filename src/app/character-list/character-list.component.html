@@ -32,12 +32,10 @@
       </div>
       <div class="character-list__filter-button-row">
         <button mat-raised-button (click)="onOpenComicFilterModal()">
-          <mat-icon> filter_alt </mat-icon>
           <mat-icon> menu_book</mat-icon> Appears in comic
         </button>
 
         <button mat-raised-button (click)="onOpenEventFilterModal()">
-          <mat-icon> filter_alt</mat-icon>
           <mat-icon> celebration</mat-icon> Involved in event
         </button>
 
@@ -46,7 +44,6 @@
           (click)="onClearFilters()"
           [disabled]="selectedFilters.length === 0"
         >
-          <mat-icon> filter_alt</mat-icon>
           <mat-icon> cancel </mat-icon> Clear filters
         </button>
       </div>

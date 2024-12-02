@@ -153,7 +153,7 @@ export class CharacterListComponent {
     this.matDialog
       .open(FilterModalComponent, {
         data: { filterType },
-        minWidth: '900px',
+        width: '900px',
         disableClose: true,
       })
       .afterClosed()

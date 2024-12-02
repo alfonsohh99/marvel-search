@@ -46,6 +46,14 @@ app-character-list {
       width: 100%;
     }
   }
+
+  mat-chip {
+    .mdc-evolution-chip__text-label {
+      max-width: 285px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
 }
 app-filter-modal {
   cdk-virtual-scroll-viewport {
@@ -67,6 +75,14 @@ app-filter-modal {
       margin-top: 0px !important;
     }
   }
+  mat-chip {
+    .mdc-evolution-chip__text-label {
+      max-width: 285px;
+      overflow: hidden !important;
+      white-space: nowrap;
+    }
+  }
+
 }
 
 .skeleton-animation {

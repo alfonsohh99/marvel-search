@@ -22,6 +22,16 @@
   gap: 10px;
 }
 
+.filter-modal__filters-row {
+  margin-top: 15px;
+  mat-chip-set {
+    max-height: 90px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
+
 .filter-modal__list {
   margin-top: 20px;
   max-height: 500px;
