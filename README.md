@@ -41,3 +41,5 @@ After building our application we can generate a production ready container that
 ```bash
 docker compose up --build
 ```
+Once the container is running, open your browser and navigate to `http://localhost:8080/`
+
