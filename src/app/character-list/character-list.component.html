@@ -1,0 +1,122 @@
+<div class="character-list__container">
+  <mat-card class="character-list__search-card">
+    <mat-card-content class="character-list__search-card-content">
+      <div class="character-list__search-bar-row">
+        @let isLoading = (infinityScrollDatasource?.loading$ | async) === true;
+        @let isEmpty = (infinityScrollDatasource?.isEmpty$ | async) === true;
+        <mat-form-field class="character-list__search-form">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            type="email"
+            placeholder="Name starts with"
+            [formControl]="nameFormControl"
+            (keydown.enter)="onSearch()"
+          />
+        </mat-form-field>
+
+        <button
+          color="accent"
+          mat-raised-button
+          class="character-list__search-button"
+          [disabled]="isLoading"
+          (click)="onSearch()"
+        >
+          @if(isLoading){
+          <mat-spinner diameter="25"></mat-spinner>
+          }@else{
+          <mat-icon>search</mat-icon>
+
+          }
+        </button>
+      </div>
+      <div class="character-list__filter-button-row">
+        <button mat-raised-button (click)="onOpenComicFilterModal()">
+          <mat-icon> filter_alt </mat-icon>
+          <mat-icon> menu_book</mat-icon> Appears in comic
+        </button>
+
+        <button mat-raised-button (click)="onOpenEventFilterModal()">
+          <mat-icon> filter_alt</mat-icon>
+          <mat-icon> celebration</mat-icon> Involved in event
+        </button>
+
+        <button mat-raised-button (click)="onClearFilters()">
+          <mat-icon> filter_alt</mat-icon>
+          <mat-icon> cancel </mat-icon> Clear filters
+        </button>
+      </div>
+
+      @if(selectedFilters.length){
+      <div class="character-list__filters-row">
+        <mat-chip-set>
+          @for (selectedFilter of selectedFilters; track selectedFilter.id; let
+          i = $index) {
+          <mat-chip>
+            <mat-icon matChipAvatar>
+              {{ characterListFilterTypeIconMap[selectedFilter.type] }}
+            </mat-icon>
+            {{ characterListFilterTypeNameMap[selectedFilter.type] }}:
+            {{ selectedFilter.title }}
+            <button matChipRemove (click)="onChipRemove(i)">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+          }
+        </mat-chip-set>
+      </div>
+      <mat-divider class="character-list__dim-divider"></mat-divider>
+      }
+      <mat-list class="character-list__list" cdkVirtualScrollingElement>
+        @if(infinityScrollDatasource){
+        <cdk-virtual-scroll-viewport
+          itemSize="50"
+          [minBufferPx]="viewHeight - 200"
+          [maxBufferPx]="viewHeight"
+        >
+          <div *cdkVirtualFor="let item of infinityScrollDatasource">
+            @if(item){
+            <mat-list-item>
+              <mat-icon matListItemIcon>person</mat-icon>
+              <h3 matListItemTitle>{{ item.name }}</h3>
+
+              <p matListItemLine>
+                <span style="font-weight: 100"
+                  >Description: {{ item.description || "empty" }}</span
+                >
+              </p>
+            </mat-list-item>
+            } @else{
+            <mat-list-item class="skeleton-animation"></mat-list-item>
+            }
+          </div>
+        </cdk-virtual-scroll-viewport>
+        } @else{
+        <!--  PENDING LIST -->
+        <div class="character-list__empty-list">
+          <div class="character-list__empty-list-icon-container">
+            <mat-icon>search</mat-icon>
+          </div>
+          <h2>Click the search button to start a new search</h2>
+        </div>
+        }
+        <!-- EMPTY LIST -->
+        @if(!isLoading && isEmpty ){
+        <div class="character-list__empty-list">
+          <div class="character-list__empty-list-icon-container">
+            <mat-icon>search_off</mat-icon>
+          </div>
+          <h2>
+            Your filters did not yield any results, try a different
+            configuration
+          </h2>
+        </div>
+        }
+      </mat-list>
+
+      <div class="character-list__attribution-section">
+        <a href="http://marvel.com">Data provided by Marvel. © 2024 MARVEL</a>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

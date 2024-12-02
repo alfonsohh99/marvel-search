@@ -1,0 +1,132 @@
+:host {
+  --view-margin: 20px;
+  --toolbar-height: 64px;
+  max-height: calc(100% - var(--view-margin) - var(--toolbar-height));
+  height: calc(100% - var(--view-margin) - var(--toolbar-height));
+  display: block;
+}
+
+.character-list__container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  max-height: 100%;
+  height: 100%;
+}
+
+.character-list__search-card {
+  width: 800px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  --view-margin: 20px;
+  max-height: calc(100% - var(--view-margin));
+  height: calc(100% - var(--view-margin));
+}
+
+.character-list__search-card-content {
+  max-height: calc(100% - 16px);
+  height: calc(100% - 16px);
+  display: flex;
+  flex-direction: column;
+}
+
+.character-list__search-form {
+  flex-grow: 1;
+}
+
+.character-list__search-button {
+  height: 60px;
+  max-width: 66px;
+  top: 0px;
+  align-self: start;
+  .mat-icon {
+    margin: 0px;
+    transform: scale(1.5);
+  }
+}
+.character-list__search-bar-row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.character-list__list {
+  --search-bar-height: 76px;
+  --view-padding: 16px;
+  --view-margin: 10px;
+  --filter-bar-height: 90px;
+  --filter-bar-gap: 20px;
+  --filter-button-bar-height: 40px;
+  --filter-divider-height: 20px;
+  margin-top: 20px;
+  max-height: calc(
+    100% - var(--search-bar-height) - var(--view-padding) - var(--view-margin) -
+      var(--filter-bar-height) - var(--filter-bar-gap) -
+      var(--filter-button-bar-height) - var(--filter-divider-height)
+  );
+  height: calc(
+    100% - var(--search-bar-height) - var(--view-padding) - var(--view-margin) -
+      var(--filter-bar-height) - var(--filter-bar-gap) -
+      var(--filter-button-bar-height) - var(--filter-divider-height)
+  );
+  overflow: auto;
+  overflow-x: hidden;
+  mat-list-item {
+    .mat-icon {
+      align-self: center;
+    }
+  }
+}
+
+.character-list__empty-list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 95%;
+  .character-list__empty-list-icon-container {
+    display: flex;
+    justify-content: center;
+    .mat-icon {
+      scale: 2;
+    }
+  }
+  h2 {
+    font-weight: 500;
+    text-align: center;
+  }
+}
+
+.character-list__dim-divider {
+  opacity: 0.3;
+  margin-top: 10px;
+}
+
+.character-list__filter-button-row {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  gap: 5px;
+  .mat-icon {
+    margin-right: 15px;
+  }
+}
+
+.character-list__filters-row {
+  margin-top: 15px;
+  mat-chip-set {
+    max-height: 90px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
+.character-list__attribution-section {
+  font-size: 1.1em;
+  margin-top: 20px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  flex-grow: 2;
+}

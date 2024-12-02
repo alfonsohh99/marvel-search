@@ -1,0 +1,12 @@
+@use "@angular/material" as mat;
+
+:host {
+  max-height: 100%;
+  height: 100%;
+  display: block;
+}
+
+.layout__toolbar {
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,7 @@
+services:
+  marvel-search:
+    image: marvel-search
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"

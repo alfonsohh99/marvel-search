@@ -1,0 +1,5 @@
+{
+  "privateKey": "*privateKey*",
+  "publicKey": "*publicKey*",
+  "baseEndpoint":"http://gateway.marvel.com/v1/public"
+}

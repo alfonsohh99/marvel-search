@@ -1,0 +1,100 @@
+<h2 mat-dialog-title>Add {{ data.filterType }} filter</h2>
+<mat-dialog-content class="mat-typography mat-app-background">
+  <div class="filter-modal__container">
+    <div class="filter-modal__search-bar-row">
+      <mat-form-field class="filter-modal__search-form">
+        <mat-label
+          >{{ characterListFilterTypeNameMap[data.filterType] }} name</mat-label
+        >
+        <input
+          matInput
+          type="email"
+          placeholder="{{
+            characterListFilterTypeNameMap[data.filterType]
+          }} name starts with"
+          [formControl]="searchFormcontrol"
+          (keydown.enter)="onSearch()"
+        />
+      </mat-form-field>
+      <button
+        color="accent"
+        mat-raised-button
+        class="filter-modal__search-button"
+        (click)="onSearch()"
+      >
+        <mat-icon>search</mat-icon>
+      </button>
+    </div>
+    <div class="character-list__filters-row">
+      <mat-chip-set>
+        @for (selectedFilter of selectedFilters; track selectedFilter.id; let i
+        = $index) {
+        <mat-chip>
+          <mat-icon matChipAvatar>
+            {{ characterListFilterTypeIconMap[data.filterType] }}
+          </mat-icon>
+          {{ characterListFilterTypeNameMap[data.filterType] }}:
+          {{ selectedFilter.title }}
+          <button matChipRemove (click)="onChipRemove(i)">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip>
+        }
+      </mat-chip-set>
+    </div>
+    <mat-list class="filter-modal__list" cdkVirtualScrollingElement>
+      @if(infinityScrollDatasource){
+      <cdk-virtual-scroll-viewport
+        itemSize="50"
+        [minBufferPx]="viewHeight - 200"
+        [maxBufferPx]="viewHeight"
+      >
+        <div *cdkVirtualFor="let item of infinityScrollDatasource">
+          @if(item ){
+          <mat-list-item
+            class="filter-modal__list-item"
+            (click)="onItemClick(item)"
+          >
+            <mat-icon matListItemIcon>{{
+              characterListFilterTypeIconMap[data.filterType]
+            }}</mat-icon>
+            <h3 matListItemTitle>{{ item.title }}</h3>
+
+            <p matListItemLine>
+              <span style="font-weight: 100"
+                >Description: {{ item.description || "empty" }}</span
+              >
+            </p>
+          </mat-list-item>
+          } @else{
+          <mat-list-item class="skeleton-animation"></mat-list-item>
+          }
+        </div>
+      </cdk-virtual-scroll-viewport>
+      } @else{
+      <div class="filter-modal__empty-list">
+        <div class="filter-modal__empty-list-icon-container">
+          <mat-icon>search</mat-icon>
+        </div>
+        <h2>Click the search button to start a new search</h2>
+      </div>
+      } @let isLoading = (infinityScrollDatasource?.loading$ | async) === true;
+      @let isEmpty = (infinityScrollDatasource?.isEmpty$ | async) === true;
+      <!-- EMPTY LIST -->
+      @if(!isLoading && isEmpty ){
+      <div class="filter-modal__empty-list">
+        <div class="filter-modal__empty-list-icon-container">
+          <mat-icon>search_off</mat-icon>
+        </div>
+        <h2>
+          Your filters did not yield any results, try a different configuration
+        </h2>
+      </div>
+      }
+    </mat-list>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button cdkFocusInitial (click)="onAddFilter()">Add</button>
+</mat-dialog-actions>
