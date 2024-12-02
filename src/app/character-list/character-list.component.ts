@@ -21,7 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { FilterModalComponent } from '../filter-modal/filter-modal.component';
 import { CharacterService } from '../services/character.service';
 import { InifityScrollDatasource } from '../shared/infinity-scroll-datasource/infinity-scroll-datasource';
@@ -33,6 +33,8 @@ import {
 import { Character } from '../shared/model/character-search/character-search-response.model';
 import { ChipItem } from '../shared/model/chip-item.model';
 import { ExtendedChipItem } from '../shared/model/extended-chip-item.model';
+import { MarvelError } from '../shared/model/error.model';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-character-list',
@@ -49,6 +51,7 @@ import { ExtendedChipItem } from '../shared/model/extended-chip-item.model';
     MatDividerModule,
     MatProgressSpinnerModule,
     AsyncPipe,
+    MatTooltipModule
   ],
   templateUrl: './character-list.component.html',
   styleUrl: './character-list.component.scss',
@@ -76,6 +79,8 @@ export class CharacterListComponent {
   characterListFilterTypeIconMap = CHARACTER_LIST_FILTER_TYPE_ICON_MAP;
 
   destroyRef = inject(DestroyRef);
+
+  fetchError: MarvelError | undefined;
 
   constructor(
     private readonly characterService: CharacterService,
@@ -120,7 +125,16 @@ export class CharacterListComponent {
           )
           .map((event) => event.id),
       })
-      .pipe(map((response) => response.data.results));
+      .pipe(
+        catchError((err) => {
+          this.fetchError = { code: err.status, message: err.error.message };
+          return throwError(() => err);
+        }),
+        map((response) => {
+          this.fetchError = undefined;
+          return response.data.results;
+        })
+      );
   }
 
   onClearFilters(): void {

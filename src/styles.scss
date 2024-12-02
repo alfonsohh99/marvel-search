@@ -69,7 +69,6 @@ app-filter-modal {
   }
 }
 
-
 .skeleton-animation {
   animation: loading 0.7s infinite alternate-reverse;
   border-radius: 20px !important;
@@ -87,3 +86,6 @@ app-filter-modal {
   }
 }
 
+.mat-icon-error-color {
+  color: mat.m2-get-color-from-palette(mat.$red-palette, 90);
+}

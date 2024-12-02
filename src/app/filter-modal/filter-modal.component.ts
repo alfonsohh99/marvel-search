@@ -18,7 +18,7 @@ import {
   CdkVirtualScrollViewport,
   ScrollingModule,
 } from '@angular/cdk/scrolling';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { Comic } from '../shared/model/comic-search/comic-search-response.model';
 import { ComicService } from '../services/comic.service';
 import { MatListModule } from '@angular/material/list';
@@ -27,6 +27,8 @@ import { ChipItem } from '../shared/model/chip-item.model';
 import { EventService } from '../services/event.service';
 import { Event } from '../shared/model/event-search/event-search-response.model';
 import { AsyncPipe } from '@angular/common';
+import { MarvelError } from '../shared/model/error.model';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export interface FilterModalComponentData {
   filterType: CharacterListFilterType;
@@ -43,7 +45,8 @@ export interface FilterModalComponentData {
     ScrollingModule,
     MatListModule,
     MatChipsModule,
-    AsyncPipe
+    AsyncPipe,
+    MatTooltipModule
   ],
   templateUrl: './filter-modal.component.html',
   styleUrl: './filter-modal.component.scss',
@@ -68,6 +71,8 @@ export class FilterModalComponent {
   characterListFilterTypeNameMap = CHARACTER_LIST_FILTER_TYPE_NAME_MAP;
 
   characterListFilterTypeIconMap = CHARACTER_LIST_FILTER_TYPE_ICON_MAP;
+
+  fetchError: MarvelError | undefined;
 
   constructor(
     private readonly dialogRef: MatDialogRef<FilterModalComponent>,
@@ -108,7 +113,16 @@ export class FilterModalComponent {
             limit: this.pageSize,
             nameStartsWith: this.query.titleStartsWith,
           });
-    return source.pipe(map((response) => response.data.results));
+    return source.pipe(
+      catchError((err) => {
+        this.fetchError = { code: err.status, message: err.error.message };
+        return throwError(() => err);
+      }),
+      map((response) => {
+        this.fetchError = undefined;
+        return response.data.results;
+      })
+    );
   }
 
   onItemClick(item: Comic | Event): void {

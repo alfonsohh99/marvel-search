@@ -41,7 +41,11 @@
           <mat-icon> celebration</mat-icon> Involved in event
         </button>
 
-        <button mat-raised-button (click)="onClearFilters()">
+        <button
+          mat-raised-button
+          (click)="onClearFilters()"
+          [disabled]="selectedFilters.length === 0"
+        >
           <mat-icon> filter_alt</mat-icon>
           <mat-icon> cancel </mat-icon> Clear filters
         </button>
@@ -80,9 +84,14 @@
               <mat-icon matListItemIcon>person</mat-icon>
               <h3 matListItemTitle>{{ item.name }}</h3>
 
+              @let description = (item.description || "Not provided");
               <p matListItemLine>
-                <span style="font-weight: 100"
-                  >Description: {{ item.description || "empty" }}</span
+                <span
+                  class="character-list__list-item-description"
+                  [matTooltip]="description"
+                  matTooltipPositionAtOrigin="true"
+                  matTooltipShowDelay="300"
+                  >Description: {{ description }}</span
                 >
               </p>
             </mat-list-item>
@@ -101,7 +110,7 @@
         </div>
         }
         <!-- EMPTY LIST -->
-        @if(!isLoading && isEmpty ){
+        @if(!isLoading && isEmpty && !fetchError){
         <div class="character-list__empty-list">
           <div class="character-list__empty-list-icon-container">
             <mat-icon>search_off</mat-icon>
@@ -109,6 +118,17 @@
           <h2>
             Your filters did not yield any results, try a different
             configuration
+          </h2>
+        </div>
+        }
+        <!-- ERROR REQUEST -->
+        @if(!isLoading && isEmpty && fetchError){
+        <div class="character-list__empty-list">
+          <div class="character-list__empty-list-icon-container">
+            <mat-icon class="mat-icon-error-color">cancel</mat-icon>
+          </div>
+          <h2>
+            There was an error during the request <br />{{ fetchError.message }}
           </h2>
         </div>
         }

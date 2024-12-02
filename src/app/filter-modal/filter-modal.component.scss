@@ -54,7 +54,10 @@
   }
 }
 
-.filter-modal__list-item{
+.filter-modal__list-item {
   cursor: pointer;
   border-radius: 10px;
+  .filter-modal__list-item-description {
+    font-weight: 100;
+  }
 }

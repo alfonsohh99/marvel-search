@@ -2,8 +2,10 @@ import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   BehaviorSubject,
+  catchError,
   map,
   Observable,
+  of,
   Subject,
   Subscription,
   take,
@@ -96,7 +98,10 @@ export class InifityScrollDatasource<T> extends DataSource<T | undefined> {
     this._fetchedPages.add(page);
     this.loading$.next(true);
     this.fetchPageUser(page)
-      .pipe(take(1))
+      .pipe(
+        take(1),
+        catchError(() => of([]))
+      )
       .subscribe({
         next: (resultItems) => {
           this._cachedData.splice(
